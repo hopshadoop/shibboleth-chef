@@ -13,6 +13,9 @@ platforms:
 suites:
   - name: default
     run_list:
+#      - recipe[kagent::install]
       - recipe[hops_shibboleth::install]
       - recipe[hops_shibboleth::default]
+      - recipe[hops_shibboleth::idp]
+      - recipe[hops_shibboleth::sp]
     attributes:

@@ -11,10 +11,10 @@ version          '0.1.0'
   supports os
 end
 
-depends 'apache2'
-depends 'tomcat'
-depends 'shibboleth_idp"'
-depends 'shibboleth_sp"'
+depends "apache2"
+depends "tomcat"
+depends "shibboleth_sp"
+depends "shibboleth_idp"
 
 recipe  "hops_shibboleth::install", "Installs binaries"
 
