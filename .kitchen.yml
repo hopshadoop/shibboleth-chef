@@ -7,7 +7,7 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-  - url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+#  - url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
   #- name: centos-7.2
 
 suites:
