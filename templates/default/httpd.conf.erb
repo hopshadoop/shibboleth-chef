@@ -1,0 +1,16 @@
+LoadModule jk_module /usr/lib/httpd/modules/mod_jk.so
+JkWorkersFile /etc/httpd/conf/worker.properties
+# Where to put jk logs
+JkLogFile /var/log/httpd/mod_jk.log
+# Set the jk log level [debug/error/info]
+JkLogLevel debug
+# Select the log format
+JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+# JkOptions indicate to send SSL KEY SIZE,
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+# JkRequestLogFormat set the request format
+JkRequestLogFormat "%w %V %T"
+# Send all jsp requests to GlassFish
+#JkMount /*.jsp <%= @hopsworks_ip %>
+# Send all bbc requests to GlassFish
+JkMount /bbc/* <%= @hopsworks_ip %>
