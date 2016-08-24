@@ -13,8 +13,8 @@ end
 
 depends "apache2"
 depends "tomcat"
-depends "shibboleth_sp"
-depends "shibboleth_idp"
+#depends "shibboleth_sp"
+#depends "shibboleth_idp"
 
 recipe  "hops_shibboleth::install", "Installs binaries"
 

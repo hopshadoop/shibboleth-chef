@@ -25,7 +25,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   # If this value is a shorthand to a box in Vagrant Cloud then
   # config.vm.box_url doesn't need to be specified.
-  config.vm.box = 'chef/ubuntu-14.04'
+  #config.vm.box = 'chef/ubuntu-14.04'
+  config.vm.box = "opscode-ubuntu-14.04"
+  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20150924.0.0/providers/virtualbox.box"
 
 
   # Assign this VM to a host-only network IP, allowing you to access it
@@ -64,7 +66,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Enabling the Berkshelf plugin. To enable this globally, add this configuration
   # option to your ~/.vagrant.d/Vagrantfile file
-  config.berkshelf.enabled = true
 
   # An array of symbols representing groups of cookbook described in the Vagrantfile
   # to exclusively install and copy to Vagrant's shelf.
@@ -85,9 +86,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     chef.run_list = [
       'recipe[hops_shibboleth::install]',
-      'recipe[hops_shibboleth::default]',
-      'recipe[hops_shibboleth::idp]',
-      'recipe[hops_shibboleth::sp]'
+      'recipe[hops_shibboleth::default]'
+  #    'recipe[hops_shibboleth::idp]',
+  #    'recipe[hops_shibboleth::sp]'
     ]
   end
 end
