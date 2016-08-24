@@ -3,17 +3,7 @@ include_recipe "apache2"
 
 
 
-bash "download_extract_shibboleth" do
-    user "root"
-    code <<-EOF
+include_recipe "apache2::mod_proxy"
+include_recipe "apache2::mod_proxy_balancer"
+include_recipe "apache2::mod_proxy_ajp"
 
-  wget ....
-  tar zxf ....
-  mkdir ...
-  mv ...
-
-
-
-EOF
-#  not_if { ::File.exists?( "#{node.shibboleth}/.." ) }
-end
