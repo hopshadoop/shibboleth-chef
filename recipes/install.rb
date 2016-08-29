@@ -48,6 +48,6 @@ end
 link "/etc/apache2/sites-enabled/hops-default.xml" do
   owner "www-data"
   group "www-data"
-  to "/etc/apache2/sites-available/hops-default.xml" do
+  to "/etc/apache2/sites-available/hops-default.xml" 
 end
 
