@@ -1,0 +1,72 @@
+<SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config"
+	  xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config"
+	  xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+	  xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"    
+	  xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+	  clockSkew="180">
+
+
+  <ApplicationDefaults id="default" policyId="default"
+		       entityID="<%= node.shibboleth.sp.entityid %>"
+  REMOTE_USER="eppn persistent-id targeted-id">
+  <!--  signing="true" encryption="true" -->
+
+
+  <!--
+      #Session parameters
+      # Refer to: https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPSessions
+  -->
+
+  <Sessions lifetime="28800" timeout="3600" checkAddress="false"
+	    handlerURL="/Shibboleth.sso" handlerSSL="true"
+	    exportLocation="http://<%= @public_ip %>/Shibboleth.sso/GetAssertion" exportACL="<%= @public_ip %>"
+  idpHistory="false" idpHistoryDays="9">
+
+            <!--
+            Configures SSO for a default IdP. To allow for >1 IdP, remove
+            entityID property and adjust discoveryURL to point to discovery service.
+            (Set discoveryProtocol to "WAYF" for legacy Shibboleth WAYF support.)
+            You can also override entityID on /Login query string, or in RequestMap/htaccess.
+            -->
+            <SSO entityID="https://<%= @public_ip %>/idp/shibboleth"
+                 discoveryProtocol="SAMLDS" discoveryURL="https://ds.example.org/DS/WAYF">
+              SAML2 SAML1
+            </SSO>
+
+            <!-- SAML and local-only logout. -->
+            <Logout>SAML2 Local</Logout>
+            
+            <!-- Extension service that generates "approximate" metadata based on SP configuration. -->
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+
+            <!-- Status reporting service. -->
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+
+            <!-- Session diagnostic service. -->
+            <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+
+            <!-- JSON feed of discovery information. -->
+            <Handler type="DiscoveryFeed" Location="/DiscoFeed"/>
+
+  <!--
+      #SessionInitiators handle session requests.
+  -->
+
+  <!-- Specific IdP's SSO service (favoring SAML 2 over Shib 1). -->
+  <SessionInitiator type="Chaining" Location="/Login" isDefault="true" id="Intranet"
+		    relayState="cookie" entityID="<%= node.shibboleth.idp.entityid %>" forceAuthn="true"/>
+  <SessionInitiator type="SAML2" acsIndex="1" template="bindingTemplate.html"/>
+  <SessionInitiator type="Shib1" acsIndex="5"/>
+</Sessions>
+
+
+    </ApplicationDefaults>
+    
+    <!-- Policies that determine how to process and authenticate runtime messages. -->
+    <!-- <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/> -->
+
+    <!-- <\!-- Low-level configuration about protocols and bindings available for use. -\-> -->
+    <!-- <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/> -->
+
+
+</SPConfig>

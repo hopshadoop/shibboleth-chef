@@ -81,7 +81,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         server_root_password: 'rootpass',
         server_debian_password: 'debpass',
         server_repl_password: 'replpass'
-      }
+      },
+      "shibboleth" => {
+          "sp" => {
+              "entityid" : "https://hops.io/shibboleth"
+          },
+      "shibboleth" => {
+          "idp" => {
+              "entityid" : "https://saml.sys.kth.se/idp/shibboleth"
+          },
+     },
+     
     }
 
     chef.run_list = [

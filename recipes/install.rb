@@ -9,3 +9,24 @@ include_recipe "apache2::mod_proxy"
 include_recipe "apache2::mod_proxy_balancer"
 include_recipe "apache2::mod_proxy_ajp"
 
+
+private_ip = my_private_ip()
+public_ip = my_public_ip()
+
+
+package "install apache shibboleth module" do
+  case node[:platform]
+  when 'redhat', 'centos'
+    package_name 'httpd'
+  when 'ubuntu', 'debian'
+    package_name 'libapache2-mod-shib2'
+  end
+end
+
+template "/etc/shibboleth/shibboleth2.xml" do
+  source "shibboleth2.xml.erb"
+  owner "www-data"
+  group "www-data"
+  mode 0755
+  variables({ :public_ip => public_ip })
+end
