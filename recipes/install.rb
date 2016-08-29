@@ -23,6 +23,12 @@ package "install apache shibboleth module" do
   end
 end
 
+
+file "/etc/shibboleth/shibboleth2.xml" do
+  user "root"
+  action :delete
+end
+
 template "/etc/shibboleth/shibboleth2.xml" do
   source "shibboleth2.xml.erb"
   owner "www-data"
@@ -30,3 +36,18 @@ template "/etc/shibboleth/shibboleth2.xml" do
   mode 0755
   variables({ :public_ip => public_ip })
 end
+
+template "/etc/apache2/sites-available/hops-default.xml" do
+  source "hops-default.xml.erb"
+  owner "www-data"
+  group "www-data"
+  mode 0755
+  variables({ :public_ip => public_ip })
+end
+
+link "/etc/apache2/sites-enabled/hops-default.xml" do
+  owner "www-data"
+  group "www-data"
+  to "/etc/apache2/sites-available/hops-default.xml" do
+end
+
