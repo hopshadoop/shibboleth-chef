@@ -1,7 +1,8 @@
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
-    ServerName bbc1.sics.se/hopsworks
+#    ServerName <%= @public_ip %>/hopsworks
+    ServerName <%= node['fqdn'] %>/hopsworks
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
     <Location>

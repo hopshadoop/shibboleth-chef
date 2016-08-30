@@ -38,8 +38,8 @@ template "/etc/shibboleth/shibboleth2.xml" do
   variables({ :public_ip => public_ip })
 end
 
-template "/etc/apache2/sites-available/hops-default.xml" do
-  source "hops-default.xml.erb"
+template "/etc/apache2/sites-available/hops-default.conf" do
+  source "hops-default.conf.erb"
   owner "www-data"
   group "www-data"
   mode 0755
