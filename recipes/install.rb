@@ -27,6 +27,7 @@ end
 file "/etc/shibboleth/shibboleth2.xml" do
   user "root"
   action :delete
+  ignore_failure: True
 end
 
 template "/etc/shibboleth/shibboleth2.xml" do
