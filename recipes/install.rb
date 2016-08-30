@@ -50,4 +50,3 @@ link "/etc/apache2/sites-enabled/hops-default.xml" do
   group "www-data"
   to "/etc/apache2/sites-available/hops-default.xml" 
 end
-
