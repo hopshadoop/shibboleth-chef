@@ -24,3 +24,12 @@ recipe  "hops_shibboleth::idp", "shibboleth idp"
 
 recipe  "hops_shibboleth::sp", "shibbloeth sp"
 
+
+attribute "hops_shibboleth/sp/entityId",
+          :display_name =>  "Url for Shibboleth SP e.g., https://hops.io/shibboleth",
+          :type => 'string'
+
+attribute "hops_shibboleth/idp/entityId",
+          :display_name =>  "Url for Shibboleth IDP e.g., https://hops.io/shibboleth",
+          :type => 'string'
+
