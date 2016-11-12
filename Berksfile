@@ -3,7 +3,7 @@ source 'https://supermarket.chef.io'
 
 #metadata
 
-cookbook 'hops_shibboleth', path: '.'
+#cookbook 'hops_shibboleth', path: '.'
 cookbook 'apache2', '~> 3.2.2'
 cookbook 'tomcat', '~> 2.3.1'
 cookbook 'java'
