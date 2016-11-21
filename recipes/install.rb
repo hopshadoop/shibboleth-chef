@@ -3,9 +3,11 @@ node.default.java.install_flavor = "oracle"
 node.default.java.oracle.accept_oracle_download_terms = true
 include_recipe "java"
 
+
 include_recipe "apache2"
 
 include_recipe "apache2::mod_proxy"
+include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_proxy_balancer"
 include_recipe "apache2::mod_proxy_ajp"
 
@@ -50,3 +52,6 @@ link "/etc/apache2/sites-enabled/hops-default.xml" do
   group "www-data"
   to "/etc/apache2/sites-available/hops-default.xml" 
 end
+
+
+

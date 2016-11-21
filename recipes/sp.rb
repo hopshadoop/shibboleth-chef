@@ -1,3 +1,3 @@
 
-include_recipe "shibboleth_sp"
+#include_recipe "shibboleth_sp"
 
