@@ -1,9 +1,6 @@
 # hops_shibboleth Cookbook
 
-TODO: Enter the cookbook description here.
-
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+Shibboleth cookbook for Hops.
 
 ## Requirements
 
