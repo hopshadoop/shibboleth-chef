@@ -96,9 +96,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
 
     chef.run_list = [
-  #    'recipe[hops_shibboleth::install]',
-  #     'recipe[hops_shibboleth::default]'
-  #    'recipe[hops_shibboleth::idp]',
+     'recipe[hops_shibboleth::install]',
+     'recipe[hops_shibboleth::default]'
+     'recipe[hops_shibboleth::idp]',
   #    'recipe[hops_shibboleth::sp]'
     ]
   end
