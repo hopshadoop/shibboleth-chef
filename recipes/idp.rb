@@ -1,6 +1,4 @@
 
-
-
 tomcat_install 'sp' do
   version '8.0.36'
 end
@@ -10,25 +8,42 @@ tomcat_service 'sp' do
   env_vars [{ 'CATALINA_PID' => '/tmp/tomcat.pid' }]
 end
 
+filename =  File.basename(node.shibboleth.idp.url)
+cached_package_filename = "/tmp/#{filename}"
+
+remote_file cached_package do
+  source shibboleth.idp.url
+  mode 0755
+  action :create
+  owner node['tomcat-all'][:user]
+  group node['tomcat-all'][:group]
+end
+
+shib_dir="shibboleth-identity-provider-#{node.shibboleth.idp.version}"
+
+template "#{node.shibboleth.idp.dir}/#{shib_dir}" do
+  source "temp.properties.erb"
+  owner node['tomcat-all'][:user]
+  group node['tomcat-all'][:group]
+  mode 0751
+end
+
 
 
 bash "idp-stuff" do
-    user "root"
+  owner node['tomcat-all'][:user]
+  group node['tomcat-all'][:group]
     code <<-EOF
     set -e
 
-
-INSTALLDIR=/opt/shibboleth-idp
+INSTALLDIR=#{node.shibboleth.idp.dir}
 if [ -d $INSTALLDIR ]; then
-	echo "$INSTALLDIR already exists."
-	rm -rf /opt/shibboleth-idp
+   rm -rf #{node.shibboleth.idp.dir}/shibboleth-idp
 fi
-#### download the Shibboleth identity provider
-cd /opt
-curl -LO http://shibboleth.net/downloads/identity-provider/3.2.1/shibboleth-identity-provider-3.2.1.tar.gz
-tar -xvzf shibboleth-identity-provider-3.2.1.tar.gz
-cd shibboleth-identity-provider-3.2.1/bin	
 
+cd /tmp
+tar -xvzf #{filename} -C #{node.shibboleth.idp.dir}
+cd #{node.shibboleth.idp.dir}/#{shib_dir}
 
 DFLT = "#{node.shibboleth.idp.dlft}"
 ADJDFLT = "idp"
@@ -37,43 +52,17 @@ DFLT = $ADJDFLT
 SVCNAME = "#{node.shibboleth.idp.svcname}"
 SVCNAME=${SVCNAME:-$DFLT}
 
-cd shibboleth-identity-provider-3.2.1
 PASSWORD=$(openssl rand -base64 12)
 # generate a password for client-side encryption
 echo "idp.sealer.password = $PASSWORD" > credentials.properties
 chmod 0600 credentials.properties
 
-# preconfigure settings for a typical sics deployment
-cat >temp.properties <<EOF
-idp.additionalProperties= /conf/ldap.properties, /conf/saml-nameid.properties, /conf/services.properties, /conf/credentials.properties
-idp.sealer.storePassword= $PASSWORD
-idp.sealer.keyPassword= $PASSWORD
-idp.signing.key= ${INSTALLDIR}/credentials/idp.key
-idp.signing.cert= ${INSTALLDIR}/credentials/idp.crt
-idp.encryption.key= ${INSTALLDIR}/credentials/idp.key
-idp.encryption.cert= ${INSTALLDIR}/credentials/idp.crt
-idp.entityID= https://${SVCNAME}/idp/shibboleth
-idp.scope= $ADJDFLT
-idp.consent.StorageService= shibboleth.JPAStorageService
-idp.consent.userStorageKey= shibboleth.consent.AttributeConsentStorageKey
-idp.consent.userStorageKeyAttribute= %{idp.persistentId.sourceAttribute}
-idp.consent.allowGlobal= false
-idp.consent.compareValues= true
-idp.consent.maxStoredRecords= -1
-idp.ui.fallbackLanguages= en,de,fr,se
-idp.entityID.metadataFile=
-EOF
-
-
-
 # run the installer
 ./install.sh -noinput -Didp.relying.party.present= -Didp.src.dir=. -Didp.target.dir=$INSTALLDIR -Didp.merge.properties=temp.properties -Didp.sealer.password=$(cut -d " " -f3 <credentials.properties) \
 		-Didp.keystore.password= -Didp.conf.filemode=644 -Didp.host.name=$SVCNAME -Didp.scope=$ADJDFLT
 
+mv credentials.properties $INSTALLDIR/conf
 
-	mv credentials.properties $INSTALLDIR/conf
-
-echo -e "\nCreating self-signed certificate..."
 bin/keygen.sh --lifetime 3 \
 	--certfile $INSTALLDIR/credentials/idp.crt \
 	--keyfile $INSTALLDIR/credentials/idp.key \
@@ -83,10 +72,10 @@ bin/keygen.sh --lifetime 3 \
 chmod 600 $INSTALLDIR/credentials/idp.key
 
 # adapt owner of key file and directories
-getent passwd tomcat7 >/dev/null && TCUSER=tomcat7 || TCUSER=tomcat
-chown $TCUSER $INSTALLDIR/credentials/{idp.key,sealer.*}
-chown $TCUSER $INSTALLDIR/{metadata,logs}
-chown $TCUSER $INSTALLDIR/conf/credentials.properties
+
+chown -R node['tomcat-all'][:user] $INSTALLDIR/credentials/{idp.key,sealer.*}
+chown -R node['tomcat-all'][:user] $INSTALLDIR/{metadata,logs}
+chown -R node['tomcat-all'][:user] $INSTALLDIR/conf/credentials.properties
 
 
 EOF

@@ -11,3 +11,9 @@ default.shibboleth.idp.entityid                             = "https://saml.sys.
 
 default.shibboleth.idp.dlft                                 = "hops.io"
 default.shibboleth.idp.svcname                              = "idp"
+
+default.shibboleth.idp.version                              = "3.2.1"
+
+default.shibboleth.idp.dir                                  = "/opt"
+
+default.shibboleth.idp.url                                  = "http://shibboleth.net/downloads/identity-provider/#{node.shibboleth.idp.version}/shibboleth-identity-provider-#{node.shibboleth.idp.version}.tar.gz"

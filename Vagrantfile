@@ -28,8 +28,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.vm.box = 'chef/ubuntu-14.04'
 #  config.vm.box = "opscode-ubuntu-14.04"
 #  config.vm.box_url = "https://atlas.hashicorp.com/ubuntu/boxes/trusty64/versions/20150924.0.0/providers/virtualbox.box"
-  config.vm.box = "centos-7.0"
-  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box"
+  config.vm.box = "centos-7.2"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
 
   # Assign this VM to a host-only network IP, allowing you to access it
   # via the IP. Host-only networks can talk to the host machine as well as
@@ -85,11 +85,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       },
       "shibboleth" => {
           "sp" => {
-              "entityid" : "https://hops.io/shibboleth"
+              "entityid": "https://hops.io/shibboleth",
           },
-      "shibboleth" => {
           "idp" => {
-              "entityid" : "https://saml.sys.kth.se/idp/shibboleth"
+              "entityid": "https://saml.sys.kth.se/idp/shibboleth",
           },
      },
      
@@ -97,7 +96,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     chef.run_list = [
      'recipe[hops_shibboleth::install]',
-     'recipe[hops_shibboleth::default]'
+     'recipe[hops_shibboleth::default]',
      'recipe[hops_shibboleth::idp]',
   #    'recipe[hops_shibboleth::sp]'
     ]
