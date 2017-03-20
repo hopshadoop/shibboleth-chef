@@ -2,7 +2,7 @@
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
 #    ServerName <%= @public_ip %>/hopsworks
-    ServerName <%= node['fqdn'] %>/hopsworks
+    ServerName <%= node['hostname'] %>/hopsworks
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
     <Location>
