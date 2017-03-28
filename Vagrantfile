@@ -20,13 +20,13 @@ Vagrant.configure("2") do |config|
     dn2.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "cookbooks"
       chef.json = {
-          "karamel" => {
+          "hops_shibboleth" => {
 	    "default" =>      { 
               "private_ips" => ["192.168.56.101","192.168.56.102","192.168.56.103"]
 	    },
           },
         }
-#      chef.add_recipe "karamel::install"
+      chef.add_recipe "hops_shibboleth::install"
     end
   end
 
@@ -46,13 +46,13 @@ Vagrant.configure("2") do |config|
     dn1.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "cookbooks"
       chef.json = {
-          "karamel" => {
+          "hops_shibboleth" => {
 	    "default" =>      { 
               "private_ips" => ["192.168.56.101","192.168.56.102","192.168.56.103"]
 	    },
           },
         }
-#      chef.add_recipe "karamel::install"
+      chef.add_recipe "hops_shibboleth::install"
     end
   end
 
@@ -68,7 +68,6 @@ Vagrant.configure("2") do |config|
     dn0.vm.network(:forwarded_port, {:guest=>8080, :host=>8080})     
 
 
-#    dn0.vm.provision "file", source: "cluster.yml", destination: "cluster.yml"
     dn0.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "~/.ssh/id_rsa"    
     dn0.vm.provision "shell", inline: "cp /home/vagrant/.ssh/authorized_keys /home/vagrant/.ssh/id_rsa.pub && sudo chown vagrant:vagrant /home/vagrant/.ssh/id_rsa.pub"
     
@@ -81,7 +80,7 @@ Vagrant.configure("2") do |config|
     dn0.vm.provision :chef_solo do |chef|
         chef.cookbooks_path = "cookbooks"
         chef.json = {
-          "karamel" => {
+          "hops_shibboleth" => {
 	    "default" =>      { 
               "private_ips" => ["192.168.56.101","192.168.56.102","192.168.56.103"]
 	    },
@@ -90,9 +89,7 @@ Vagrant.configure("2") do |config|
         chef.add_recipe "hops_shibboleth::install"
         chef.add_recipe "hops_shibboleth::idp"
         chef.add_recipe "hops_shibboleth::sp"        
-#        chef.add_recipe "karamel::install"
-#        chef.add_recipe "karamel::default"     
-#        chef.add_recipe "karamel::run"     
+
       end
     
   end

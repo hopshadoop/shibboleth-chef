@@ -9,4 +9,7 @@ cookbook 'tomcat', '~> 2.3.3'
 cookbook 'java'
 #cookbook 'shibboleth_sp', github: "biobankcloud/chef-shibboleth_sp", branch: "master"
 #cookbook 'shibboleth_idp', github: "biobankcloud/chef-shibboleth_idp", branch: "master"
+cookbook 'hostsfile', '~> 2.4.5'
+cookbook 'kagent', github: "karamelchef/kagent-chef", branch: "master"
+cookbook 'conda', github: "hopshadoop/conda-chef", branch: "master"
 

@@ -13,8 +13,9 @@ end
 
 depends "apache2"
 depends "tomcat"
-#depends "shibboleth_sp"
-#depends "shibboleth_idp"
+depends "hostsfile"
+depends "java"
+depends "kagent"
 
 recipe  "hops_shibboleth::install", "Installs binaries"
 
